@@ -1,47 +1,64 @@
-from datetime import datetime
-from typing import Annotated
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
-from fastapi.responses import RedirectResponse
-from fastapi.staticfiles import StaticFiles
+"""
+Authentication routes for user registration, login, and token management.
+Provides endpoints for account creation and credential verification.
+"""
+
+from fastapi import APIRouter, HTTPException, status, Depends
+
+from models import RegisterRequest, LoginRequest, AuthResponse
+from supabase_client import get_supabase_client
+from functions.auth_functions import register_user, login_user
+
+# Create router for authentication endpoints
+router = APIRouter(
+    prefix="/auth",
+    tags=["Authentication"],
+    responses={
+        400: {"description": "Bad Request"},
+        401: {"description": "Unauthorized"},
+        500: {"description": "Internal Server Error"}
+    }
+)
 
 
-
-import functions.auth_functions as auth_service
-from ..models import LoginFormData, RegisterFormData
-import config
-
-router = APIRouter(prefix="/auth") #TODO
-
-@router.post("/register")
+@router.post("/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
 async def register(
-    request: Request,
-    email: str = Form(...),
-    password: str = Form(...),
-    first_name: str = Form(...),
-    last_name: str = Form(...),
-   
-):
+    register_data: RegisterRequest,
+    db = Depends(get_supabase_client)
+) -> AuthResponse:
+    """
+    Register a new user account.
+    
+    - **email**: School email address (must be from .edu or similar academic domain)
+    - **password**: Minimum 8 characters
+    - **first_name**: User's first name
+    - **last_name**: User's last name
+    - **school**: Name of the school/university
+    
+    Returns an access token that should be used for subsequent authenticated requests.
+    """
+    return await register_user(db, register_data)
 
 
-    # Create register data
-    register_data = RegisterFormData(
-        email=email,
-        password=password,
-        first_name=first_name,
-        last_name=last_name,
-        
-    )
+@router.post("/login", response_model=AuthResponse)
+async def login(
+    login_data: LoginRequest,
+    db = Depends(get_supabase_client)
+) -> AuthResponse:
+    """
+    Login with email and password.
+    
+    - **email**: School email address
+    - **password**: Password
+    
+    Returns an access token for authenticated requests.
+    """
+    return await login_user(db, login_data.email, login_data.password)
 
-    return await auth_service.register_with_email_password(register_data)
 
-
-@router.post("/login")
-async def login(model: LoginFormData):
-    return await auth_service.login_with_email(model)
-
-
-@router.get("/logout")
-async def logout():
-    response = RedirectResponse(url="/")
-    response.delete_cookie("firebase_token")
-    return response
+@router.get("/health")
+async def health_check():
+    """
+    Health check endpoint to verify the auth service is running.
+    """
+    return {"status": "healthy", "message": "Authentication service is running"}
