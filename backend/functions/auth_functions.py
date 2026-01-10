@@ -22,8 +22,6 @@ async def email_password(model: RegisterFormData):
                 {
                     "first_name": model.first_name,
                     "last_name": model.last_name,
-                    
-                   
            
                 }
             )
