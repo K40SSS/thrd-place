@@ -41,7 +41,7 @@ async def email_password(model: RegisterFormData):
 async def login_with_email(model: LoginFormData):
     try:
         response = requests.post(
-            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config.env["FIREBASE_WEB_API_KEY"]}", #TODO
+            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config.env["SUPABASE_API_KEY"]}", #TODO
             json={
                 "email": model.email,
                 "password": model.password,
