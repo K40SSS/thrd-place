@@ -1,6 +1,7 @@
 main {
     display: flex;
     margin-top: 80px;
+    align-items: center;
 }
 
 .hero-section {
