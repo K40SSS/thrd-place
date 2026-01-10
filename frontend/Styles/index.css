@@ -1,0 +1,13 @@
+main {
+    display: flex;
+    margin-top: 80px;
+}
+
+.hero-section {
+    border: solid white;
+    flex: 1;
+}
+
+.graphic {
+    flex: 1;
+}

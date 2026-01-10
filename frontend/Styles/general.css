@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --mcmaster-maroon: #7A003C;
+}
+
+body {
+    background-color: rgb(37, 37, 37);
+    position: relative;
+}
