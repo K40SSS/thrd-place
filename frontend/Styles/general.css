@@ -5,11 +5,9 @@
     font-family: 'Poppins', sans-serif;
 }
 
-:root {
-    --mcmaster-maroon: #7A003C;
-}
 
 body {
     background-color: rgb(37, 37, 37);
     position: relative;
+    height: 100vh;
 }
