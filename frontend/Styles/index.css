@@ -51,6 +51,7 @@ main {
 
 .read-btn:hover {
     background-color: #8f0047;
+    transition: background-color 0.3s;
 }
 
 .graphic {
