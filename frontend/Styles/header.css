@@ -1,0 +1,59 @@
+header {
+    background-color: rgb(32, 32, 32);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+header .left-side {
+    padding-left: 20px;
+}
+
+header .right-side {
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+}
+
+header .right-side div {
+    margin-left: 15px;
+    padding: 4px 12px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+header .right-side div:hover {
+    background-color: rgba(255, 255, 255, 0.068);
+}
+
+.logo-holder {
+    width: 200px;
+}
+
+.logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.login-btn {
+    margin-left: 15px;
+    padding: 6px 24px;
+    cursor: pointer;
+    border: none;
+    border-radius: 15px;
+    background-color: #7A003C;
+    color: white;
+    font-size: 22px;
+}
+
+.login-btn:hover {
+    background-color: #8f0047;
+}
