@@ -11,7 +11,7 @@ db = firestore_async.client()
 users_db = db.collection("users")
 
 
-async def register_with_email_password(model: RegisterFormData):
+async def email_password(model: RegisterFormData):
     try:
         user = auth.get_user_by_email(model.email)
         raise HTTPException(status_code=400, detail="User already exists")
@@ -22,10 +22,9 @@ async def register_with_email_password(model: RegisterFormData):
                 {
                     "first_name": model.first_name,
                     "last_name": model.last_name,
-                    "role": model.role,
-                    "photo_url": model.photo_url,
-                    "position": "General Member",
-                    "degree": "",
+                    
+                   
+           
                 }
             )
             # Create LoginFormData for login
@@ -44,7 +43,7 @@ async def register_with_email_password(model: RegisterFormData):
 async def login_with_email(model: LoginFormData):
     try:
         response = requests.post(
-            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config.env["FIREBASE_WEB_API_KEY"]}",
+            f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={config.env["FIREBASE_WEB_API_KEY"]}", #TODO
             json={
                 "email": model.email,
                 "password": model.password,
