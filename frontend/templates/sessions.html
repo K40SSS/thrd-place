@@ -29,48 +29,21 @@
         <div class="subtitle">
             <img src="../Icons/subtitles/actsess-subtitle.png" alt="Availiability" class="subtilte-img">
         </div>
-        <div class="available-sessions">
-            <div class="sessions-card">
-                <h2>Introduction to THRDPLACE - MATH1B03</h2>
-                <p>Date: 2024-07-01</p>
-                <p>Time: 10:00 AM - 11:00 AM</p>
-                <p>Location: Room 101</p>
-                <p>Max Capacity: 4</p>
-                <button class="join-btn">Join Session</button>
-            </div>
-            <div class="sessions-card">
-                <h2>Introduction to THRDPLACE - MATH1B03</h2>
-                <p>Date: 2024-07-01</p>
-                <p>Time: 10:00 AM - 11:00 AM</p>
-                <p>Location: Room 101</p>
-                <p>Max Capacity: 4</p>
-                <button class="join-btn">Join Session</button>
-            </div>
-            <div class="sessions-card">
-                <h2>Introduction to THRDPLACE - MATH1B03</h2>
-                <p>Date: 2024-07-01</p>
-                <p>Time: 10:00 AM - 11:00 AM</p>
-                <p>Location: Room 101</p>
-                <p>Max Capacity: 4</p>
-                <button class="join-btn">Join Session</button>
-            </div>
-            <div class="sessions-card">
-                <h2>Introduction to THRDPLACE - MATH1B03</h2>
-                <p>Date: 2024-07-01</p>
-                <p>Time: 10:00 AM - 11:00 AM</p>
-                <p>Location: Room 101</p>
-                <p>Max Capacity: 4</p>
-                <button class="join-btn">Join Session</button>
-            </div>
-            <div class="sessions-card">
-                <h2>Introduction to THRDPLACE - MATH1B03</h2>
-                <p>Date: 2024-07-01</p>
-                <p>Time: 10:00 AM - 11:00 AM</p>
-                <p>Location: Room 101</p>
-                <p>Max Capacity: 4</p>
-                <button class="join-btn">Join Session</button>
+        <div class="available-sessions" id="sessions-container">
+            <!-- Sessions will be dynamically loaded here -->
+        </div>
+
+        <!-- Session Details Modal -->
+        <div id="sessionModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div id="modalBody">
+                    <!-- Session details will be populated here -->
+                </div>
             </div>
         </div>
     </main>
+
+    <script src="../Scripts/sessions.js"></script>
 </body>
 </html>

@@ -18,18 +18,38 @@ main {
 
 .available-sessions {
     margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 800px;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 90%;
+    max-width: 1200px;
+    padding: 0 20px;
 }
 
 .sessions-card {
     border-radius: 15px;
-    padding: 10px 20px;
+    padding: 20px;
     background-color: rgb(46, 46, 46);
-    width: 700px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.sessions-card h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #7A003C;
+}
+
+.sessions-card p {
+    font-size: 14px;
+    margin: 8px 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.sessions-card p strong {
+    color: white;
 }
 
 .sessions-card:hover {
@@ -51,4 +71,153 @@ main {
 .join-btn:hover {
     background-color: #9C004F;
     transition: 0.3s;
+}
+
+/* ==================== MODAL STYLES ==================== */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: rgb(37, 37, 37);
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(122, 0, 60, 0.3);
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #7A003C;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #9C004F;
+    transform: scale(1.2);
+}
+
+.modal-session-details {
+    color: white;
+}
+
+.modal-session-details h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #7A003C;
+}
+
+.modal-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #7A003C;
+}
+
+.modal-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 8px 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.modal-section strong {
+    color: white;
+}
+
+.modal-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.join-session-btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    background-color: #7A003C;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 1;
+    max-width: 300px;
+}
+
+.join-session-btn:hover:not(:disabled) {
+    background-color: #9C004F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(122, 0, 60, 0.4);
+}
+
+.join-session-btn:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        padding: 30px 20px;
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .modal-session-details h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .modal-section {
+        margin-bottom: 18px;
+        padding-bottom: 15px;
+    }
+
+    .available-sessions {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .sessions-card {
+        width: 100%;
+    }
 }
