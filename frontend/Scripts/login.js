@@ -83,7 +83,7 @@
 
             if (data && data.access_token) {
                 console.log('[Login] Token received, saving to localStorage');
-                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('token', data.access_token);
                 showMessage('✓ Login successful! Redirecting...', 'success');
             } else {
                 console.log('[Login] No token in response');

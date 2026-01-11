@@ -92,7 +92,7 @@
 
             if (data && data.access_token) {
                 console.log('[Signup] Token received, saving to localStorage');
-                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('token', data.access_token);
                 showMessage('✓ Account created successfully! Redirecting...', 'success');
             } else {
                 console.log('[Signup] No token in response');
