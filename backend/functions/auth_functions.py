@@ -157,6 +157,7 @@ async def register_user(
     
     # Hash password
     hashed_password = hash_password(register_data.password)
+    print(f"[REGISTER] Password hashed for {register_data.email}")
     
     # Create user in database
     try:
@@ -166,13 +167,14 @@ async def register_user(
             'first_name': register_data.first_name,
             'last_name': register_data.last_name,
             'school': register_data.school,
-            'created_at': datetime.utcnow().isoformat(),
             'bio': '',
             'rating': None
         }
         
+        print(f"[REGISTER] Inserting user with fields: {list(user_data.keys())}")
         response = db.table('users').insert(user_data).execute()
         user = response.data[0]
+        print(f"[REGISTER] User created successfully: {user['id']} | Email: {user['email']}")
         
         # Create access token
         access_token = create_access_token(data={"sub": user['id'], "email": user['email']})
@@ -188,6 +190,7 @@ async def register_user(
         )
     
     except Exception as e:
+        print(f"[REGISTER] Error creating user: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create user: {str(e)}"
@@ -216,6 +219,7 @@ async def login_user(
     try:
         # Fetch user from database
         response = db.table('users').select('*').eq('email', email).execute()
+        print(f"[LOGIN] Database query for email '{email}': {response.data if response.data else 'NO USER FOUND'}")
         
         if not response.data:
             raise HTTPException(
@@ -224,9 +228,20 @@ async def login_user(
             )
         
         user = response.data[0]
+        print(f"[LOGIN] User found: {user.get('email')} | Has password_hash: {'password_hash' in user}")
         
         # Verify password
-        if not verify_password(password, user['password_hash']):
+        if 'password_hash' not in user:
+            print(f"[LOGIN] ERROR: No password_hash field! Available fields: {list(user.keys())}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+        
+        password_match = verify_password(password, user['password_hash'])
+        print(f"[LOGIN] Password verification result: {password_match}")
+        
+        if not password_match:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid email or password"
@@ -248,6 +263,7 @@ async def login_user(
     except HTTPException:
         raise
     except Exception as e:
+        print(f"[LOGIN] Exception: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Login failed: {str(e)}"
