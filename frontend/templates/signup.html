@@ -8,12 +8,12 @@
 <body>
     <main>
         <h1>Sign Up Page</h1>
-        <form>
-            <label for="username">First Name:</label>
-            <input type="text" id="username" name="username" required>
+        <form id="signup-form">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
             <br>
-            <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" name="lastname" required>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
             <br>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
@@ -21,8 +21,48 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <br>
+            <label for="school">School:</label>
+            <input type="text" id="school" name="school" required>
+            <br>
             <button type="submit">Sign Up</button>
         </form>
     </main>
+
+    <script>
+    (function(){
+        const form = document.getElementById('signup-form');
+        form.addEventListener('submit', async function(e){
+            e.preventDefault();
+            const first_name = document.getElementById('first_name').value;
+            const last_name = document.getElementById('last_name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const school = document.getElementById('school').value;
+
+            try {
+                const res = await fetch('http://127.0.0.1:8000/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ first_name, last_name, email, password, school })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json().catch(()=>({ detail: res.statusText }));
+                    alert('Sign up failed: ' + (err.detail || res.statusText));
+                    return;
+                }
+
+                const data = await res.json();
+                if (data && data.access_token) {
+                    localStorage.setItem('access_token', data.access_token);
+                }
+                // Redirect to root or dashboard
+                window.location.href = '/';
+            } catch (err) {
+                alert('Sign up error: ' + err.message);
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
