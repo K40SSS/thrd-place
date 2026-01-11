@@ -342,6 +342,26 @@ async def remove_participant(db: Client, session_id: str, user_id: str) -> None:
         )
 
 
+async def delete_session(db: Client, session_id: str, creator_id: str) -> None:
+    """
+    Delete a study session. Only the creator is allowed to delete.
+    """
+    try:
+        # Verify creator
+        session = db.table('study_sessions').select('creator_id').eq('id', session_id).execute()
+        if not session.data:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
+        if session.data[0]['creator_id'] != creator_id:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the creator can delete this session")
+
+        # Delete participants first, then the session
+        db.table('session_participants').delete().eq('session_id', session_id).execute()
+        db.table('study_sessions').delete().eq('id', session_id).execute()
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Failed to delete session: {str(e)}")
+
 async def get_session_participants(db: Client, session_id: str) -> List[SessionParticipant]:
     """
     Get all participants in a study session.

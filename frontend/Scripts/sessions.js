@@ -6,7 +6,7 @@
     const closeBtn = document.querySelector('.close-btn');
 
     // Check if user is logged in
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token') || localStorage.getItem('token');
     if (!token) {
         console.warn('[Sessions] No auth token found, redirecting to login');
         window.location.href = 'login.html';
@@ -18,12 +18,14 @@
     // Close modal when X is clicked
     closeBtn.addEventListener('click', () => {
         sessionModal.style.display = 'none';
+        document.body.classList.remove('modal-open');
     });
 
     // Close modal when clicking outside of it
     window.addEventListener('click', (e) => {
         if (e.target === sessionModal) {
             sessionModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
         }
     });
 
@@ -87,6 +89,9 @@
                             ${session.is_full ? 'disabled' : ''}>
                         ${session.is_full ? 'Session Full' : 'Join Session'}
                     </button>
+                    ${localStorage.getItem('user_id') === session.creator_id ? `
+                    <button class="delete-session-btn" data-session-id="${session.id}">Delete Session</button>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -97,7 +102,33 @@
             joinBtn.addEventListener('click', () => joinSession(session.id));
         }
 
+        // Add delete session functionality if creator
+        const deleteBtn = modalBody.querySelector('.delete-session-btn');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', async () => {
+                if (!confirm('Are you sure you want to delete this session? This cannot be undone.')) return;
+                try {
+                    const res = await fetch(`http://127.0.0.1:8000/sessions/${session.id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (!res.ok) {
+                        const err = await res.json().catch(()=>({}));
+                        alert('Failed to delete: ' + (err.detail || res.statusText));
+                        return;
+                    }
+                    alert('Session deleted.');
+                    sessionModal.style.display = 'none';
+                    loadSessions();
+                } catch (e) {
+                    console.error('[Sessions] Delete failed', e);
+                    alert('Delete error: ' + e.message);
+                }
+            });
+        }
+
         sessionModal.style.display = 'block';
+        document.body.classList.add('modal-open');
     }
 
     // Function to join a session
@@ -137,9 +168,6 @@
                 }
             });
 
-            console.log('[Sessions] Response status:', res.status);
-            console.log('[Sessions] Response ok:', res.ok);
-
             if (!res.ok) {
                 const err = await res.json().catch(() => ({}));
                 console.error('[Sessions] Failed to fetch sessions:', err);
@@ -148,24 +176,18 @@
             }
 
             const sessions = await res.json();
-            console.log('[Sessions] Received response:', sessions);
-            console.log('[Sessions] Sessions count:', sessions.length);
-            console.log('[Sessions] Sessions data:', JSON.stringify(sessions, null, 2));
+            console.log('[Sessions] Received', sessions.length, 'sessions');
 
             // Clear the container
             sessionsContainer.innerHTML = '';
 
-            if (!sessions || sessions.length === 0) {
-                console.log('[Sessions] No sessions returned from backend');
-                sessionsContainer.innerHTML = '<p style="text-align: center; color: #999;">No study sessions available yet. <a href="create-session.html">Create one!</a></p>';
+            if (sessions.length === 0) {
+                sessionsContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #999;">No study sessions available yet. <a href="create-session.html">Create one!</a></p>';
                 return;
             }
 
-            console.log('[Sessions] Processing', sessions.length, 'sessions');
-            
             // Add each session card
-            sessions.forEach((session, index) => {
-                console.log('[Sessions] Creating card for session:', session.title);
+            sessions.forEach(session => {
                 const card = createSessionCard(session);
                 sessionsContainer.appendChild(card);
             });
@@ -173,7 +195,6 @@
             console.log('[Sessions] Sessions displayed successfully');
         } catch (err) {
             console.error('[Sessions] Exception:', err);
-            console.error('[Sessions] Exception stack:', err.stack);
             sessionsContainer.innerHTML = `<p>Error loading sessions: ${err.message}</p>`;
         }
     }

@@ -10,3 +10,8 @@ body {
     background-color: rgb(37, 37, 37);
     position: relative;
 }
+
+/* Prevent background scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}

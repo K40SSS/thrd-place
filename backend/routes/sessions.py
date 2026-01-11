@@ -18,7 +18,8 @@ from functions.session_functions import (
     get_school_sessions,
     add_participant,
     remove_participant,
-    get_session_participants
+    get_session_participants,
+    delete_session
 )
 from functions.auth_functions import verify_token
 
@@ -149,12 +150,8 @@ async def get_available_sessions(
     
     Requires authentication via Bearer token.
     """
-    print(f"[GET /sessions/] User ID: {user_id}")
-    
     # Get user's school from database
     user_response = db.table('users').select('school').eq('id', user_id).execute()
-    print(f"[GET /sessions/] User response: {user_response.data}")
-    
     if not user_response.data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -162,7 +159,6 @@ async def get_available_sessions(
         )
     
     school = user_response.data[0]['school']
-    print(f"[GET /sessions/] User school: {school}")
     
     # Build filters dict
     filters = {}
@@ -173,12 +169,7 @@ async def get_available_sessions(
     if exclude_full:
         filters['exclude_full'] = True
     
-    print(f"[GET /sessions/] Filters: {filters}")
-    
-    sessions = await get_school_sessions(db, school, filters if filters else None)
-    print(f"[GET /sessions/] Returning {len(sessions)} sessions")
-    
-    return sessions
+    return await get_school_sessions(db, school, filters if filters else None)
 
 
 @router.post("/{session_id}/join", status_code=status.HTTP_200_OK)
@@ -238,3 +229,16 @@ async def get_participants(
     Requires authentication via Bearer token.
     """
     return await get_session_participants(db, session_id)
+
+
+@router.delete("/{session_id}")
+async def delete_session_endpoint(
+    session_id: str,
+    user_id: str = Depends(get_current_user),
+    db = Depends(get_supabase_client)
+):
+    """
+    Delete a session you created. Only the creator may delete.
+    """
+    await delete_session(db, session_id, user_id)
+    return {"message": "Session deleted"}

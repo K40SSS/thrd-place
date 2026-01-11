@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../Styles/general.css" />
+  <link rel="stylesheet" href="../Styles/header.css" />
+  <link rel="stylesheet" href="../Styles/sessions.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <title>My Sessions - THRDPLACE</title>
+  <style>
+    .my-sessions-layout { margin-top: 120px; padding: 20px; }
+    .my-sessions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .panel { background: rgb(46,46,46); border-radius: 12px; padding: 16px; }
+    .panel h2 { color:#7A003C; margin-bottom: 12px; }
+    .panel .list { display:flex; flex-wrap:wrap; gap:16px; }
+    @media (max-width: 800px){ .my-sessions-grid{ grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="left-side">
+      <div class="logo-holder">
+        <a href="../index.html"><img src="../Icons/logo/THRDPLACE-white.png" alt="Logo" class="logo" /></a>
+      </div>
+    </div>
+    <div class="right-side">
+      <!-- Navbar will be populated by header.js -->
+    </div>
+  </header>
+
+  <main class="my-sessions-layout">
+    <div class="my-sessions-grid">
+      <section class="panel">
+        <h2>Created by Me</h2>
+        <div id="created-list" class="list"></div>
+      </section>
+      <section class="panel">
+        <h2>Joined by Me</h2>
+        <div id="joined-list" class="list"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../Scripts/header.js"></script>
+  <script src="../Scripts/my-sessions.js"></script>
+</body>
+</html>

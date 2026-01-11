@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Chats - THRDPLACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../Styles/general.css">
+  <link rel="stylesheet" href="../Styles/header.css">
+  <link rel="stylesheet" href="../Styles/group-chats.css">
+</head>
+<body>
+  <header>
+    <div class="left-side">
+      <div class="logo-holder">
+        <a href="../index.html"><img src="../Icons/logo/THRDPLACE-white.png" alt="Logo" class="logo"></a>
+      </div>
+    </div>
+    <div class="right-side">
+      <!-- Navbar will be populated by header.js -->
+    </div>
+  </header>
+  
+  <main class="group-chats-container">
+    <div class="chats-header">
+      <h1>Group Chats</h1>
+      <p>Connect with your study groups</p>
+    </div>
+
+    <div class="chats-grid" id="chats-grid">
+      <!-- Chat cards will be loaded here -->
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal">
+      <div class="chat-modal-content">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <h2 id="chatTitle">Session Title</h2>
+            <p id="chatCourseCode">Course Code</p>
+          </div>
+          <button class="close-chat-btn" id="closeChatBtn">&times;</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages will appear here -->
+        </div>
+        
+        <div class="chat-input-container">
+          <input 
+            type="text" 
+            id="messageInput" 
+            placeholder="Type a message..." 
+            autocomplete="off"
+          />
+          <button id="sendMessageBtn">Send</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../Scripts/header.js"></script>
+  <script src="../Scripts/group-chats.js"></script>
+</body>
+</html>

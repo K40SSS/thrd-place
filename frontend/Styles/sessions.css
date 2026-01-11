@@ -57,6 +57,16 @@ main {
     transition: 0.3s;
 }
 
+/* ==================== MY SESSIONS LAYOUT STABILITY ==================== */
+.my-sessions-grid .panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-sessions-grid .panel .list {
+    min-height: 240px; /* Reserve space to prevent layout snapping */
+}
+
 .join-btn {
     margin-top: 10px;
     padding: 10px 20px;
@@ -80,24 +90,45 @@ main {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: flex-end;
 }
 
 .modal-content {
     background-color: rgb(37, 37, 37);
     padding: 40px;
-    border-radius: 15px;
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
+    height: 100vh;
+    width: 480px;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(122, 0, 60, 0.3);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.7);
+    border-left: 2px solid rgba(122, 0, 60, 0.5);
+    animation: slideIn 0.25s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
 }
 
 .close-btn {
@@ -106,14 +137,24 @@ main {
     top: 20px;
     font-size: 32px;
     font-weight: bold;
-    color: #7A003C;
+    color: white;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.2s;
+    background-color: #7A003C;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
 }
 
 .close-btn:hover {
-    color: #9C004F;
-    transform: scale(1.2);
+    background-color: #9C004F;
+    transform: scale(1.1);
 }
 
 .modal-session-details {
@@ -146,31 +187,6 @@ main {
     margin: 5px 0;
 }
 
-.join-session-btn {
-    margin-top: 20px;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 8px;
-    background-color: #7A003C;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-.join-session-btn:hover:not(:disabled) {
-    background-color: #9C004F;
-}
-
-.join-session-btn:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-}
-
 .modal-section p {
     font-size: 16px;
     line-height: 1.6;
@@ -183,24 +199,22 @@ main {
 }
 
 .modal-actions {
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
     justify-content: center;
 }
 
 .join-session-btn {
-    padding: 12px 30px;
+    padding: 10px 20px;
     font-size: 16px;
     font-weight: 600;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #7A003C;
     color: white;
     cursor: pointer;
     transition: all 0.3s;
-    flex: 1;
-    max-width: 300px;
 }
 
 .join-session-btn:hover:not(:disabled) {
@@ -215,12 +229,70 @@ main {
     opacity: 0.7;
 }
 
+.delete-session-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background-color: #7A003C;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.delete-session-btn:hover {
+    background-color: #9C004F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(122, 0, 60, 0.4);
+}
+
+.delete-session-btn:active {
+    transform: translateY(0);
+}
+
+/* Delete button styling in session cards (My Sessions page) */
+.sessions-card .delete-session-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 14px;
+    flex: unset;
+    max-width: none;
+}
+
+.leave-session-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    background-color: #7A003C;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.leave-session-btn:hover {
+    background-color: #9C004F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(122, 0, 60, 0.4);
+}
+
+/* Leave button styling in session cards (My Sessions page) */
+.sessions-card .leave-session-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
 /* ==================== RESPONSIVE ==================== */
 @media screen and (max-width: 768px) {
     .modal-content {
         padding: 30px 20px;
-        width: 95%;
-        max-height: 85vh;
+        width: 100%;
+        max-height: 100vh;
     }
 
     .modal-session-details h2 {
@@ -240,5 +312,15 @@ main {
 
     .sessions-card {
         width: 100%;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .delete-session-btn,
+    .join-session-btn {
+        width: 100%;
+        max-width: none;
     }
 }

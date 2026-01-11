@@ -92,7 +92,15 @@
 
             if (data && data.access_token) {
                 console.log('[Signup] Token received, saving to localStorage');
+                // Store token under both keys for compatibility
+                localStorage.setItem('access_token', data.access_token);
                 localStorage.setItem('token', data.access_token);
+                // Store basic user info for client-side checks
+                if (data.id) localStorage.setItem('user_id', data.id);
+                if (data.email) localStorage.setItem('user_email', data.email);
+                if (data.first_name) localStorage.setItem('first_name', data.first_name);
+                if (data.last_name) localStorage.setItem('last_name', data.last_name);
+                if (data.school) localStorage.setItem('school', data.school);
                 showMessage('✓ Account created successfully! Redirecting...', 'success');
             } else {
                 console.log('[Signup] No token in response');
