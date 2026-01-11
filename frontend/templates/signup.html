@@ -3,31 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THRDPLACE</title>
+    <link rel="stylesheet" href="../Styles/general.css">
+    <link rel="stylesheet" href="../Styles/header.css">
+    <link rel="stylesheet" href="../Styles/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>THRDPLACE - Sign Up</title>
 </head>
 <body>
+    <header>
+        <div class="left-side">
+            <div class="logo-holder">
+                <a href="../index.html"><img src="../Icons/logo/THRDPLACE-white.png" alt="Logo" class="logo"></a>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="about"><a href="">About</a></div>
+            <div class="sessions"><a href="sessions.html">Sessions</a></div>
+            <div class="create-session"><a href="">Create a Session</a></div>
+            <button class="login-btn"><a href="login.html">LOGIN</a></button>
+        </div>
+    </header>
     <main>
-        <h1>Sign Up Page</h1>
-        <form id="signup-form">
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" required>
-            <br>
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" required>
-            <br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <label for="school">School:</label>
-            <input type="text" id="school" name="school" required>
-            <br>
-            <button type="submit">Sign Up</button>
-        </form>
+        <section class="form-section">
+            <h1 class="form-title">Sign Up</h1>
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="school">School:</label>
+                    <input type="text" id="school" name="school" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+            <p class="form-link">Already have an account? <a href="login.html">Login</a></p>
+        </section>
     </main>
-
-    <script src="Scripts/signup.js"></script>
 </body>
 </html>
