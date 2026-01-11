@@ -6,7 +6,7 @@
     const closeBtn = document.querySelector('.close-btn');
 
     // Check if user is logged in
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('token');
     if (!token) {
         console.warn('[Sessions] No auth token found, redirecting to login');
         window.location.href = 'login.html';

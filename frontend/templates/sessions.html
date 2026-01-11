@@ -22,7 +22,7 @@
             <div class="about"><a href="about.html">About</a></div>
             <div class="sessions"><a href="sessions.html">Sessions</a></div>
             <div class="create-session"><a href="create-session.html">Create a Session</a></div>
-            <button class="login-btn"><a href="login.html">LOGIN</a></button>
+            <button class="login-btn" id="loginBtn"><a href="login.html">LOGIN</a></button>
         </div>
     </header>
     <main>
@@ -44,6 +44,16 @@
         </div>
     </main>
 
+    <script>
+        // Hide login button if user is logged in
+        const token = localStorage.getItem('token');
+        if (token) {
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.style.display = 'none';
+            }
+        }
+    </script>
     <script src="../Scripts/sessions.js"></script>
 </body>
 </html>

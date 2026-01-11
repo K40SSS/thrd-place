@@ -202,39 +202,50 @@ async def get_school_sessions(db: Client, school: str, filters: Optional[dict] =
         List of StudySessionResponse
     """
     try:
+        print(f"[GET_SCHOOL_SESSIONS] Fetching sessions for school: {school}")
+        
         # Get all users from the school
         users_response = db.table('users').select('id').eq('school', school).execute()
         user_ids = [u['id'] for u in users_response.data] if users_response.data else []
+        print(f"[GET_SCHOOL_SESSIONS] Found {len(user_ids)} users from {school}")
         
         if not user_ids:
+            print(f"[GET_SCHOOL_SESSIONS] No users found for school {school}, returning empty list")
             return []
         
         # Get all sessions created by users from this school
         sessions = []
-        query = db.table('study_sessions').select('*')
         
-        for user_id in user_ids:
-            response = query.eq('creator_id', user_id).execute()
-            if response.data:
-                for session_data in response.data:
-                    # Apply filters
-                    if filters:
-                        if filters.get('course_code') and session_data['course_code'] != filters['course_code']:
-                            continue
-                        if filters.get('meeting_type') and session_data['meeting_type'] != filters['meeting_type']:
-                            continue
-                        if filters.get('exclude_full'):
-                            participants_response = db.table('session_participants').select('id', count='exact').eq('session_id', session_data['id']).execute()
-                            current_capacity = len(participants_response.data) if participants_response.data else 0
-                            if current_capacity >= session_data['max_capacity']:
-                                continue
+        # Query all sessions and filter by creator_id
+        all_sessions_response = db.table('study_sessions').select('*').execute()
+        print(f"[GET_SCHOOL_SESSIONS] Total sessions in database: {len(all_sessions_response.data) if all_sessions_response.data else 0}")
+        
+        if all_sessions_response.data:
+            for session_data in all_sessions_response.data:
+                # Only include sessions created by users from this school
+                if session_data['creator_id'] not in user_ids:
+                    continue
                     
-                    session_response = await get_session_by_id(db, session_data['id'])
-                    sessions.append(session_response)
+                # Apply filters
+                if filters:
+                    if filters.get('course_code') and session_data['course_code'] != filters['course_code']:
+                        continue
+                    if filters.get('meeting_type') and session_data['meeting_type'] != filters['meeting_type']:
+                        continue
+                    if filters.get('exclude_full'):
+                        participants_response = db.table('session_participants').select('id', count='exact').eq('session_id', session_data['id']).execute()
+                        current_capacity = len(participants_response.data) if participants_response.data else 0
+                        if current_capacity >= session_data['max_capacity']:
+                            continue
+                
+                session_response = await get_session_by_id(db, session_data['id'])
+                sessions.append(session_response)
         
+        print(f"[GET_SCHOOL_SESSIONS] Returning {len(sessions)} sessions after filtering")
         return sessions
     
     except Exception as e:
+        print(f"[GET_SCHOOL_SESSIONS] Exception: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to retrieve school sessions: {str(e)}"
