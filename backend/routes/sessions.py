@@ -149,8 +149,12 @@ async def get_available_sessions(
     
     Requires authentication via Bearer token.
     """
+    print(f"[GET /sessions/] User ID: {user_id}")
+    
     # Get user's school from database
     user_response = db.table('users').select('school').eq('id', user_id).execute()
+    print(f"[GET /sessions/] User response: {user_response.data}")
+    
     if not user_response.data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -158,6 +162,7 @@ async def get_available_sessions(
         )
     
     school = user_response.data[0]['school']
+    print(f"[GET /sessions/] User school: {school}")
     
     # Build filters dict
     filters = {}
@@ -168,7 +173,12 @@ async def get_available_sessions(
     if exclude_full:
         filters['exclude_full'] = True
     
-    return await get_school_sessions(db, school, filters if filters else None)
+    print(f"[GET /sessions/] Filters: {filters}")
+    
+    sessions = await get_school_sessions(db, school, filters if filters else None)
+    print(f"[GET /sessions/] Returning {len(sessions)} sessions")
+    
+    return sessions
 
 
 @router.post("/{session_id}/join", status_code=status.HTTP_200_OK)
