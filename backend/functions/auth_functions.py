@@ -109,7 +109,7 @@ def validate_school_email(email: EmailStr) -> bool:
     # List of common academic email domains
     academic_domains = [
         '.edu', '.ac.uk', '.edu.au', '.ac.ca', '.edu.br', '.de',
-        '.fr', '.jp', '.cn', '.in', '.ac.nz'
+        '.fr', '.jp', '.cn', '.in', '.ac.nz', '@mcmaster.ca', '@waterloo.ca'
     ]
     
     email_lower = str(email).lower()
