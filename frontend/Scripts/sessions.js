@@ -137,6 +137,9 @@
                 }
             });
 
+            console.log('[Sessions] Response status:', res.status);
+            console.log('[Sessions] Response ok:', res.ok);
+
             if (!res.ok) {
                 const err = await res.json().catch(() => ({}));
                 console.error('[Sessions] Failed to fetch sessions:', err);
@@ -145,18 +148,24 @@
             }
 
             const sessions = await res.json();
-            console.log('[Sessions] Received', sessions.length, 'sessions');
+            console.log('[Sessions] Received response:', sessions);
+            console.log('[Sessions] Sessions count:', sessions.length);
+            console.log('[Sessions] Sessions data:', JSON.stringify(sessions, null, 2));
 
             // Clear the container
             sessionsContainer.innerHTML = '';
 
-            if (sessions.length === 0) {
-                sessionsContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #999;">No study sessions available yet. <a href="create-session.html">Create one!</a></p>';
+            if (!sessions || sessions.length === 0) {
+                console.log('[Sessions] No sessions returned from backend');
+                sessionsContainer.innerHTML = '<p style="text-align: center; color: #999;">No study sessions available yet. <a href="create-session.html">Create one!</a></p>';
                 return;
             }
 
+            console.log('[Sessions] Processing', sessions.length, 'sessions');
+            
             // Add each session card
-            sessions.forEach(session => {
+            sessions.forEach((session, index) => {
+                console.log('[Sessions] Creating card for session:', session.title);
                 const card = createSessionCard(session);
                 sessionsContainer.appendChild(card);
             });
@@ -164,6 +173,7 @@
             console.log('[Sessions] Sessions displayed successfully');
         } catch (err) {
             console.error('[Sessions] Exception:', err);
+            console.error('[Sessions] Exception stack:', err.stack);
             sessionsContainer.innerHTML = `<p>Error loading sessions: ${err.message}</p>`;
         }
     }
