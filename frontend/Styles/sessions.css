@@ -16,6 +16,46 @@ main {
     object-fit: contain;
 }
 
+/* Search Bar Styling */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 30px 0 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 14px 16px 14px 45px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    background-color: rgb(46, 46, 46);
+    border: 2px solid rgb(70, 70, 70);
+    border-radius: 12px;
+    transition: all 0.3s;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus {
+    border-color: #7A003C;
+    background-color: rgb(50, 50, 50);
+    box-shadow: 0 0 0 3px rgba(122, 0, 60, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+}
+
 .available-sessions {
     margin-top: 30px;
     display: flex;

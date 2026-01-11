@@ -4,6 +4,9 @@
     const sessionModal = document.getElementById('sessionModal');
     const modalBody = document.getElementById('modalBody');
     const closeBtn = document.querySelector('.close-btn');
+    const searchInput = document.getElementById('searchInput');
+
+    let allSessions = []; // Store all sessions for filtering
 
     // Check if user is logged in
     const token = localStorage.getItem('access_token') || localStorage.getItem('token');
@@ -27,6 +30,33 @@
             sessionModal.style.display = 'none';
             document.body.classList.remove('modal-open');
         }
+    });
+
+    // Search functionality
+    function filterSessions(searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        
+        if (!term) {
+            // Show all sessions if search is empty
+            displaySessions(allSessions);
+            return;
+        }
+
+        const filteredSessions = allSessions.filter(session => {
+            const titleMatch = session.title.toLowerCase().includes(term);
+            const courseMatch = session.course_code.toLowerCase().includes(term);
+            return titleMatch || courseMatch;
+        });
+
+        if (filteredSessions.length === 0) {
+            sessionsContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #999;">No sessions found matching "<strong>' + searchTerm + '</strong>"</p>';
+        } else {
+            displaySessions(filteredSessions);
+        }
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        filterSessions(e.target.value);
     });
 
     // Function to format date and time
@@ -157,6 +187,25 @@
         }
     }
 
+    // Function to display sessions from an array
+    function displaySessions(sessions) {
+        // Clear the container
+        sessionsContainer.innerHTML = '';
+
+        if (sessions.length === 0) {
+            sessionsContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #999;">No study sessions available yet. <a href="create-session.html">Create one!</a></p>';
+            return;
+        }
+
+        // Add each session card
+        sessions.forEach(session => {
+            const card = createSessionCard(session);
+            sessionsContainer.appendChild(card);
+        });
+
+        console.log('[Sessions] Sessions displayed successfully');
+    }
+
     // Function to load and display all sessions
     async function loadSessions() {
         try {
@@ -175,24 +224,11 @@
                 return;
             }
 
-            const sessions = await res.json();
-            console.log('[Sessions] Received', sessions.length, 'sessions');
+            allSessions = await res.json();
+            console.log('[Sessions] Received', allSessions.length, 'sessions');
 
-            // Clear the container
-            sessionsContainer.innerHTML = '';
-
-            if (sessions.length === 0) {
-                sessionsContainer.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #999;">No study sessions available yet. <a href="create-session.html">Create one!</a></p>';
-                return;
-            }
-
-            // Add each session card
-            sessions.forEach(session => {
-                const card = createSessionCard(session);
-                sessionsContainer.appendChild(card);
-            });
-
-            console.log('[Sessions] Sessions displayed successfully');
+            // Display all sessions initially
+            displaySessions(allSessions);
         } catch (err) {
             console.error('[Sessions] Exception:', err);
             sessionsContainer.innerHTML = `<p>Error loading sessions: ${err.message}</p>`;
