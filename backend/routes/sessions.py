@@ -94,7 +94,7 @@ async def create_new_session(
     - **date**: Session date in YYYY-MM-DD format
     - **time**: Session time in HH:MM format (24-hour)
     - **location**: Physical location or "Online"
-    - **meeting_type**: One of "in_person", "online", or "hybrid"
+    - **meeting_type**: One of "on_campus", "off_campus", or "online"
     - **max_capacity**: Maximum number of participants
     
     Requires authentication via Bearer token.

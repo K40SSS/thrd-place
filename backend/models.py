@@ -13,9 +13,9 @@ from enum import Enum
 
 class MeetingType(str, Enum):
     """Enum for different meeting types"""
-    IN_PERSON = "in_person"
+    ON_CAMPUS = "on_campus"
+    OFF_CAMPUS = "off_campus"
     ONLINE = "online"
-    HYBRID = "hybrid"
 
 
 class RegisterRequest(BaseModel):
