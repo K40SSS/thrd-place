@@ -3,6 +3,7 @@
     const messageBox = document.getElementById('message');
     
     function showMessage(text, type) {
+        console.log('[Message]', type.toUpperCase(), text);
         messageBox.textContent = text;
         messageBox.className = 'message-box ' + (type === 'error' ? 'error' : 'success');
         messageBox.style.display = 'block';
@@ -20,6 +21,8 @@
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const school = document.getElementById('school').value.trim();
+
+        console.log('[Signup] Form submitted with:', {first_name, last_name, email, school, passwordLength: password.length});
 
         // Frontend validation
         if (!first_name) {
@@ -51,16 +54,29 @@
             return;
         }
 
+        console.log('[Signup] All validations passed, sending to backend...');
+
         try {
+            const payload = { first_name, last_name, email, password, school };
+            console.log('[Fetch] Sending POST to http://127.0.0.1:8000/auth/register with payload:', payload);
             const res = await fetch('http://127.0.0.1:8000/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ first_name, last_name, email, password, school })
+                body: JSON.stringify(payload)
             });
 
+            console.log('[Fetch] Response status:', res.status, res.statusText);
+
             if (!res.ok) {
-                const err = await res.json().catch(()=>({ detail: res.statusText }));
-                showMessage('Sign up failed: ' + (err.detail || res.statusText), 'error');
+                let err;
+                try {
+                    err = await res.json();
+                    console.log('[Fetch] Error response body:', err);
+                } catch (parseErr) {
+                    err = { detail: res.statusText };
+                    console.log('[Fetch] Could not parse error response:', parseErr);
+                }
+                showMessage('Sign up failed: ' + (err.detail || err.message || res.statusText), 'error');
                 return;
             }
 
@@ -70,6 +86,7 @@
                 showMessage('✓ Account created successfully! Redirecting...', 'success');
             }
         } catch (err) {
+            console.error('[Fetch] Caught exception:', err);
             showMessage('Sign up error: ' + err.message, 'error');
         }
     });
