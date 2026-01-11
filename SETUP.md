@@ -1,23 +1,23 @@
-# Supabase Database Setup Guide
+# Database Setup
 
-## Quick Setup Instructions
+## Create Supabase Project
 
-### 1. Create Supabase Project
 1. Go to [supabase.com](https://supabase.com)
-2. Sign up or log in
-3. Create a new project
-4. Copy your **Project URL** and **Anon Key**
+2. Create new project
+3. Copy Project URL and Anon Key from Settings → API
 
-### 2. Add Credentials to .env
-Edit `backend/.env`:
+## Configure Environment
+
+Create `backend/.env`:
 ```
 SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_KEY=your_anon_key_here
 SECRET_KEY=your_super_secret_key_change_in_production
 ```
 
-### 3. Create Database Tables
-Go to Supabase SQL Editor and run this SQL:
+## Run Database Schema
+
+In Supabase SQL Editor, execute:
 
 ```sql
 -- ==================== USERS TABLE ====================
