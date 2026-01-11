@@ -47,3 +47,8 @@ main {
     font-weight: 600;
     cursor: pointer;
 }
+
+.join-btn:hover {
+    background-color: #9C004F;
+    transition: 0.3s;
+}
